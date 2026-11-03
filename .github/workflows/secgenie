@@ -1,0 +1,23 @@
+# Scan PRs to main (and manual runs) with SecGenie.
+# Requires repository secret OPENAI_API_KEY.
+name: SecGenie Security Audit
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run SecGenie
+        uses: jactheruler/secgenie-action@v1.1.0
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
